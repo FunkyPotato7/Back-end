@@ -1,1 +1,1 @@
-[{ "name": "abc", "children": [{"name": "a.jpg"}, {"name": "b.txt"}] }]
+[{ "name": "abc", "children": [{"name": "a.jpg"}, {"name": "b.txt"}] }, { "name": "cdc", "children": [{"name": "a.jpg"}, {"name": "b.txt"}] }]

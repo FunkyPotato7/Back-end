@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { shopController } = require("../controllers");
+const { shopController } = require('../controllers');
 
 router.get('/', shopController.getAll);
 
@@ -10,7 +10,7 @@ router.get('/:id/files', shopController.getFiles);
 
 router.get('/:id/file', shopController.getFile);
 
-router.post('/:id/file', shopController.createFile);
+router.post('/:id/file', shopController.updateFile);
 
 router.post('/:id/addSnippets', shopController.addSnippets);
 
