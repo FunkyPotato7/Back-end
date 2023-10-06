@@ -2,7 +2,6 @@ const fs = require('fs');
 
 const shopDB = require('../config/shop.json');
 const filesDB = require('../config/files.json');
-const fileDB = require('../config/file.json');
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -20,7 +19,7 @@ module.exports = {
             if(shopDB[id - 1]){
                 res.status(200).json(shopDB[id - 1]);
             } else {
-                res.status(404).json("This user doesn't exist")
+                res.status(404).json(`Shop with id: ${id} doesn't exist`)
             }
 
         } catch (e) {

@@ -1,4 +1,5 @@
 const express = require('express');
+const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -11,10 +12,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/api/admin/shops', shopRouter);
+const checkJwt = auth({
+    audience: 'http://localhost:5000/',
+    issuerBaseURL: 'https://dev-qu4qfo5qt4rxpul7.us.auth0.com/'
+});
+
+const checkScopes = requiredScopes('read:shops');
+
+app.use('/api/admin/shops', checkJwt, checkScopes, shopRouter);
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500).json(err.message)
+    res.status(err.status || 500).json(err.message);
 });
 
 app.listen(config.PORT, async () => {

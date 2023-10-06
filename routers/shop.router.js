@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const { authMiddleware } = require('../middlewares');
 const { shopController } = require('../controllers');
 
 router.get('/', shopController.getAll);
