@@ -21,7 +21,6 @@ module.exports = {
     checkReadShops: async (req, res, next) => {
         try {
             const { permissions } = req.user;
-            console.log(permissions);
 
             if (!permissions.includes('read:shops')) {
                 throw new ApiError('Permission denied', 403);
