@@ -48,7 +48,7 @@ module.exports = {
                 if (file[0]) {
                     res.status(200).json(file[0]);
                 } else {
-                    res.status(404).json({});
+                    res.status(201).json({});
                 }
             })
         } catch (e) {
@@ -147,7 +147,9 @@ module.exports = {
                     parsedData[id - 1].isActive = true;
 
                     await fs.writeFile(`./config/shop.json`, JSON.stringify(parsedData), (err) => {
-                        if (err !== null) {
+                        if (err === null) {
+                            res.status(200).json(`Shop enabled`);
+                        } else {
                             res.status(500).json(err);
                         }
                     });
@@ -155,8 +157,6 @@ module.exports = {
             } else {
                 res.status(404).json('Shop with this id is not exist');
             }
-
-            res.status(200).json(`Shop enabled`);
         } catch (e) {
             next(e);
         }

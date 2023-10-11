@@ -1,15 +1,8 @@
-const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 const jwt = require('jsonwebtoken');
 
 const { ApiError } = require('../errors');
 
 module.exports = {
-    auth: () => auth({
-        audience: 'http://localhost:5000/',
-        issuerBaseURL: 'https://dev-qu4qfo5qt4rxpul7.us.auth0.com/',
-        tokenSigningAlg: 'RS256'
-    }),
-
     checkToken: async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
 
@@ -18,16 +11,69 @@ module.exports = {
                 throw new ApiError('Token was not provided', 401);
             }
 
-            const decodedToken = jwt.decode(token);
-            console.log(decodedToken);
+            req.user = jwt.decode(token);
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
 
-            const checkScopes = requiredScopes('read:shops');
+    checkReadShops: async (req, res, next) => {
+        try {
+            const { permissions } = req.user;
+            console.log(permissions);
 
-            console.log(checkScopes);
+            if (!permissions.includes('read:shops')) {
+                throw new ApiError('Permission denied', 403);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUpdateShops: async (req, res, next) => {
+        try {
+            const { permissions } = req.user;
+
+            if (!permissions.includes('update:shops')) {
+                throw new ApiError('Permission denied', 403);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkReadFiles: async (req, res, next) => {
+        try {
+            const { permissions } = req.user;
+
+            if (!permissions.includes('read:files')) {
+                throw new ApiError('Permission denied', 403);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUpdateFiles: async (req, res, next) => {
+        try {
+            const { permissions } = req.user;
+
+            if (!permissions.includes('update:files')) {
+                throw new ApiError('Permission denied', 403);
+            }
 
             next();
         } catch (e) {
             next(e);
         }
     }
+
+
 }

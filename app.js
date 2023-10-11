@@ -17,9 +17,7 @@ const checkJwt = auth({
     issuerBaseURL: 'https://dev-qu4qfo5qt4rxpul7.us.auth0.com/'
 });
 
-const checkScopes = requiredScopes('read:shops');
-
-app.use('/api/admin/shops', checkJwt, checkScopes, shopRouter);
+app.use('/api/admin/shops', checkJwt, shopRouter);
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json(err.message);
